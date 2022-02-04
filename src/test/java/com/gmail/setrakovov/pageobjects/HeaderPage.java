@@ -69,7 +69,7 @@ public class HeaderPage extends BasePage {
     /**
      * Method of checking count of products in the cart form
      */
-    public Integer countOfProductsInCartForm() {
+    public int countOfProductsInCartForm() {
         return productsInCartForm.size();
     }
     /**

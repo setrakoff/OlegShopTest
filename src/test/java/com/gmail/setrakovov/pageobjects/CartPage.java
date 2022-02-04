@@ -39,8 +39,8 @@ public class CartPage extends BasePage{
     /**
      * Method for removing product by name from cart
      */
-    public Integer removeProductFromCart(Integer index) {
-        ProductCard product = productCards.get(index);
+    public List<ProductCard> removeProductFromCart(Integer itemIndex, List<ProductCard> productCards) {
+        ProductCard product = productCards.get(itemIndex);
         String xpathButtonRemoveProductFromCart = "//div[@class='c-cart-item__content-wrapper' and ./div/a[normalize-space(text())='" + product.getName() + "']]/following-sibling::div//span/a[text()='Удалить']";
         WebElement webElement = driver.findElement(By.xpath(xpathButtonRemoveProductFromCart));
         click(webElement);
@@ -48,20 +48,19 @@ public class CartPage extends BasePage{
         waitInVisibility(webElement);
         Assert.assertTrue(driver.findElements(By.xpath(xpathButtonRemoveProductFromCart)).size() < 1, "Product " + product.getName() + " is removed from cart.");
         productCards.remove(product);
-        return productCards.size();
+        return productCards;
     }
     /**
      * Method of checking count of products in cart
      */
-    public Integer countOfProducts() {
+    public int countOfProducts() {
         return listProducts.size();
     }
     /**
      * Method oj checking whether a product is not presented in cart
      */
-    public Boolean productIsRemovedFromCart(Integer index) {
-        ProductCard product = productCards.get(index);
-        String xpathCardProductInCart = "//div[@class='c-cart-item__header']/a[normalize-space(text())='" + product.getName() + "']";
+    public Boolean productIsRemovedFromCart(Integer itemIndex, String productName) {
+        String xpathCardProductInCart = "//div[@class='c-cart-item__header']/a[normalize-space(text())='" + productName + "']";
         return (countElements(xpathCardProductInCart) == 0);
     }
 

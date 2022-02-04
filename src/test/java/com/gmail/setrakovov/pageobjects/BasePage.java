@@ -19,7 +19,6 @@ import java.util.List;
 public class BasePage {
     public WebDriver driver;
     public WebDriverWait wait;
-    public List<ProductCard> productCards;
 
     /**
      * Constructor
@@ -27,7 +26,6 @@ public class BasePage {
     public BasePage (WebDriver driver){
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        productCards = new ArrayList<ProductCard>();
     }
 
     /**
@@ -41,6 +39,12 @@ public class BasePage {
      */
     public void waitVisibility(WebElement webElement) {
         wait.until(ExpectedConditions.visibilityOf(webElement));
+    }
+    /**
+     * Wait Visibility Wrapper Method
+     */
+    public void waitVisibilityOfAllElements(List<WebElement> webElements) {
+        wait.until(ExpectedConditions.visibilityOfAllElements(webElements));
     }
     /**
      * Wait InVisibility Wrapper Method

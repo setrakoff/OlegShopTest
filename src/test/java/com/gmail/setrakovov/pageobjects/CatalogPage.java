@@ -64,25 +64,24 @@ public class CatalogPage extends HeaderPage {
     /**
      * Method for adding to cart
      */
-    public Integer addToCartItem(Integer itemIndex) {
+    public List<ProductCard> addToCartItem(Integer itemIndex, List<ProductCard> productCards) {
         ProductCard productCard;
-        Integer i = itemIndex - 1;
         waitPageLoaded();
-        waitVisibility(listProductCards.get(i));
-        WebElement titleOfProduct = listProductCards.get(i).findElement(By.xpath(".//a[@class='product-title__text']"));
-        WebElement priceOfProduct = listProductCards.get(i).findElement(By.xpath(".//span[@class='price__main-value']"));
-        WebElement buttonAddToCart = listProductCards.get(i).findElement(By.xpath(".//button[@title='Добавить в корзину']"));
+        waitVisibility(listProductCards.get(itemIndex));
+        WebElement titleOfProduct = listProductCards.get(itemIndex).findElement(By.xpath(".//a[@class='product-title__text']"));
+        WebElement priceOfProduct = listProductCards.get(itemIndex).findElement(By.xpath(".//span[@class='price__main-value']"));
+        WebElement buttonAddToCart = listProductCards.get(itemIndex).findElement(By.xpath(".//button[@title='Добавить в корзину']"));
         String name = readText(titleOfProduct);
         Integer price = Integer.parseInt(readText(priceOfProduct).replace("₽", "").replace(" ", ""));
         productCard = new ProductCard(name, price);
-        super.productCards.add(productCard);
+        productCards.add(productCard);
         click(buttonAddToCart);
-        return super.productCards.size();
+        return productCards;
     }
     /**
      * Method for check added product in cart
      */
-    public Boolean productIsAddedToCart() {
-        return super.productIsPresentInCartForm(productCards.get(productCards.size() - 1));
+    public Boolean productIsAddedToCart(List<ProductCard> productCards) {
+        return productIsPresentInCartForm(productCards.get(productCards.size() - 1));
     }
 }
