@@ -10,10 +10,10 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddToCartAndRemoveOneTest extends BaseTest {
+public class CartTest extends BaseTest {
 
     @Test(description = "Check the adding and removing products from cart")
-    public void addAndRemoveFromCart() {
+    public void checkAddingAndRemovingFromCart() {
         List<ProductCard> productCards = new ArrayList<>();
         HeaderPage headerPage = new HeaderPage(driver);
         String productName;
@@ -35,8 +35,25 @@ public class AddToCartAndRemoveOneTest extends BaseTest {
         productName = productCards.get(0).getName();
         productCards = cartPage.removeProductFromCart(0, productCards);
         Assert.assertEquals(cartPage.countOfProducts(), productCards.size(), "Count of products in cart is '" + productCards.size() + "'");
-        Assert.assertTrue(cartPage.productIsRemovedFromCart(0, productName), "Product 1 is removed from cart.");
+        Assert.assertTrue(cartPage.productIsRemovedFromCart(productName), "Product 1 is removed from cart.");
 
+    }
+
+    @Test(description = "Check if it wouldn't possible to proceed to the payment if the cart is empty")
+    public void checkProceedButtonIfCartIsEmpty(){
+        List<ProductCard> productCards = new ArrayList<>();
+        HeaderPage headerPage = new HeaderPage(driver);
+
+        CatalogPage catalogPage = headerPage.goToSubItemCatalogPage();
+        catalogPage.switchProductListViewToGrid();
+        productCards = catalogPage.addToCartItem(0, productCards);
+        Assert.assertTrue(catalogPage.productIsAddedToCart(productCards), "Product 1 is added to cart.");
+
+        CartPage cartPage = headerPage.goToCartPage();
+        Assert.assertTrue(cartPage.isAvailableToProceedCheckout(), "Proceed payment button is available");
+        productCards = cartPage.removeProductFromCart(0, productCards);
+        Assert.assertEquals(cartPage.countOfProducts(), productCards.size(), "Count of products in cart is '" + productCards.size() + "'");
+        Assert.assertFalse(cartPage.isAvailableToProceedCheckout(), "Proceed payment button is not available");
     }
 
 }

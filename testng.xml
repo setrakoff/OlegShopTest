@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+    <test name="test">
+        <classes>
+            <class name="com.gmail.setrakovov.tests.CartTest">
+                <methods>
+                    <include name="checkProceedButtonIfCartIsEmpty"/>
+                    <include name="checkAddingAndRemovingFromCart"/>
+                </methods>
+            </class>
+            <class name="com.gmail.setrakovov.tests.SearchTest"/>
+        </classes>
+    </test> <!-- Test -->
+</suite> <!-- Suite -->

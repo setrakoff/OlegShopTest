@@ -1,7 +1,6 @@
 package com.gmail.setrakovov.pageobjects;
 
 import com.gmail.setrakovov.objects.ProductCard;
-import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +10,6 @@ import org.testng.Assert;
 
 import java.util.List;
 
-@Slf4j
 public class CartPage extends BasePage{
 
     /**
@@ -21,6 +19,7 @@ public class CartPage extends BasePage{
         super(driver);
         PageFactory.initElements(driver, this);
         waitURLContains("/cart");
+        waitPageLoaded();
         waitVisibility(headerPage);
     }
 
@@ -35,6 +34,8 @@ public class CartPage extends BasePage{
 
     @FindBy(xpath = "//div[@class='c-popup__content']//span[normalize-space(text())='Удалить']")
     private WebElement buttonsRemoveProductOnPopupForm;
+
+    private final String xpathButtonProceedToCheckout = "//input[@value='Перейти к оформлению']";
 
     /**
      * Method for removing product by name from cart
@@ -59,9 +60,15 @@ public class CartPage extends BasePage{
     /**
      * Method oj checking whether a product is not presented in cart
      */
-    public Boolean productIsRemovedFromCart(Integer itemIndex, String productName) {
+    public Boolean productIsRemovedFromCart(String productName) {
         String xpathCardProductInCart = "//div[@class='c-cart-item__header']/a[normalize-space(text())='" + productName + "']";
         return (countElements(xpathCardProductInCart) == 0);
+    }
+    /**
+     * Method oj checking is available proceed to checkout
+     */
+    public Boolean isAvailableToProceedCheckout() {
+        return (countElements(xpathButtonProceedToCheckout) > 0);
     }
 
 }

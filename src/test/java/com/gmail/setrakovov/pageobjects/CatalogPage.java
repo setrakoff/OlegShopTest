@@ -14,20 +14,21 @@ public class CatalogPage extends HeaderPage {
     /**
      * Constructor
      */
-    public CatalogPage(WebDriver driver) {
+    public CatalogPage(WebDriver driver, String partOfUrl) {
         super(driver);
         PageFactory.initElements(driver, this);
-        waitURLContains("/stiralnye-i-sushilnye-mashiny-2427/stiralnye-mashiny-89");
-        waitVisibility(headerPageH1);
+        waitURLContains(partOfUrl);
+        waitPageLoaded();
+        waitVisibility(contentOnPage);
     }
 
-    @FindBy(xpath = "//h1[normalize-space(text())]")
-    private WebElement headerPageH1;
+    @FindBy(xpath = "//main[@class='layout__content']")
+    private WebElement contentOnPage;
 
     @FindBy(xpath = "//mvid-dropdown//div[@class='dropdown__title' and ./span[contains(text(), 'Сначала')]]")
     private WebElement ddSearchResultSort;
 
-    private String xpathIconViewSwitcherList = "//div[@class='listing-view-switcher__inner-area']/div[contains(@class, 'pointer--list')]";
+    private final String xpathIconViewSwitcherList = "//div[@class='listing-view-switcher__inner-area']/div[contains(@class, 'pointer--list')]";
 
     @FindBy(xpath = "//div[@class='listing-view-switcher__inner-area']/mvid-button[1]/button")
     private WebElement buttonViewSwitcherList;
@@ -79,9 +80,32 @@ public class CatalogPage extends HeaderPage {
         return productCards;
     }
     /**
-     * Method for check added product in cart
+     * Method for checking added product in cart
      */
     public Boolean productIsAddedToCart(List<ProductCard> productCards) {
         return productIsPresentInCartForm(productCards.get(productCards.size() - 1));
+    }
+    /**
+     * Method for checking added product in cart
+     */
+    public Boolean selectedCategoryIsTV() {
+        String xpathCategoryButton = "//button[normalize-space(text())='Телевизоры' and contains(@class, 'selected')]";
+        Boolean isCorrectURL = driver.getCurrentUrl().contains("category=televizory");
+        Boolean isCorrectElement = countElements(xpathCategoryButton) == 1;
+        return isCorrectURL && isCorrectElement;
+    }
+    /**
+     * Method for checking the presence of keyword in results
+     */
+    public Boolean isCatalogResultsContainsKeyword(String keyword) {
+        Integer counter = 0;
+        waitVisibilityOfAllElements(listProductCards);
+        for (WebElement w:listProductCards) {
+            WebElement titleOfProduct = w.findElement(By.xpath(".//a[@class='product-title__text']"));
+            if (readText(titleOfProduct).toLowerCase().contains(keyword.toLowerCase()))
+            {counter ++;}
+        }
+        Boolean b = listProductCards.size() == counter;
+        return listProductCards.size() == counter;
     }
 }

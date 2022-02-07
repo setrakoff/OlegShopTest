@@ -1,15 +1,14 @@
 package com.gmail.setrakovov.pageobjects;
 
 import com.gmail.setrakovov.objects.ProductCard;
-import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.Locale;
 
-@Slf4j
 public class HeaderPage extends BasePage {
 
     /**
@@ -18,6 +17,7 @@ public class HeaderPage extends BasePage {
     public HeaderPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
+        waitPageLoaded();
         waitVisibility(iconMainPage);
     }
 
@@ -48,6 +48,12 @@ public class HeaderPage extends BasePage {
     @FindBy(xpath = "//mvid-header-icon-tooltip/div//a[@href and text()]")
     private List<WebElement> productsInCartForm;
 
+    @FindBy(xpath = "//input[@placeholder='Искать товары со скидкой по промокоду']")
+    private WebElement inputSearchField;
+
+    @FindBy(xpath = "//mvid-icon[@type='search']")
+    private WebElement iconSearch;
+
     /**
      * Method for expanding catalog form and go to subCategory page
      */
@@ -56,7 +62,7 @@ public class HeaderPage extends BasePage {
         click(buttonCatalogMain);
         moveMouse(category);
         click(subCategory);
-        return new CatalogPage(driver);
+        return new CatalogPage(driver, "/stiralnye-i-sushilnye-mashiny-2427/stiralnye-mashiny-89");
     }
     /**
      * Method of going to subCategory page
@@ -80,6 +86,16 @@ public class HeaderPage extends BasePage {
         waitVisibility(formProductsInCart);
         String xpathProductInBasket = ".//a[@href and text()='" + product.getName() + "']";
         return (countElements(xpathProductInBasket) > 0);
+    }
+    /**
+     * Method for searching product by search field
+     */
+    public CatalogPage searchProductByKeyword(String keyword) {
+        log.debug("Input keyword '" + keyword + "' into search field and click on Search icon");
+        writeText(inputSearchField, keyword);
+        waitTextToBe(inputSearchField, keyword);
+        click(iconSearch);
+        return new CatalogPage(driver, "product-list-page?q=" + keyword.toLowerCase(Locale.ROOT).replace(" ", "+"));
     }
 
 }

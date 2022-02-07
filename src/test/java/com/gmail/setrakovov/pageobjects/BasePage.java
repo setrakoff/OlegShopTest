@@ -1,24 +1,22 @@
 package com.gmail.setrakovov.pageobjects;
 
-import com.gmail.setrakovov.objects.ProductCard;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BasePage {
     public WebDriver driver;
     public WebDriverWait wait;
+    final Logger log = LoggerFactory.getLogger(BasePage.class);
 
     /**
      * Constructor
@@ -56,7 +54,7 @@ public class BasePage {
      * Wait TextToBe Wrapper Method
      */
     public void waitTextToBe(WebElement webElement, String text) {
-        wait.until(ExpectedConditions.textToBe(By.xpath(webElement.toString()), text));
+        wait.until(ExpectedConditions.attributeToBe(webElement, "value", text));
     }
     /**
      * Wait URL Contains Wrapper Method
