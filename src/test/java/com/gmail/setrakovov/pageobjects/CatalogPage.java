@@ -46,6 +46,7 @@ public class CatalogPage extends HeaderPage {
      * Method for selecting in sort dropdown
      */
     public void selectInListSearchResultSort(String value) {
+        log.info("Order by '" + value + "'");
         click(ddSearchResultSort);
         for(WebElement element:ddListSearchResultSort){
             if (element.getText().equals(value)){
@@ -58,6 +59,7 @@ public class CatalogPage extends HeaderPage {
      * Method for switching product list view
      */
     public void switchProductListViewToGrid() {
+        log.info("Checking sort of products and switching to List if needs");
         if(driver.findElements(By.xpath(xpathIconViewSwitcherList)).size() == 0){
             click(buttonViewSwitcherList);
         }
@@ -66,6 +68,7 @@ public class CatalogPage extends HeaderPage {
      * Method for adding to cart
      */
     public List<ProductCard> addToCartItem(Integer itemIndex, List<ProductCard> productCards) {
+        log.info("Add to cart product item with index = '" + itemIndex + "'");
         ProductCard productCard;
         waitPageLoaded();
         waitVisibility(listProductCards.get(itemIndex));
@@ -105,7 +108,7 @@ public class CatalogPage extends HeaderPage {
             if (readText(titleOfProduct).toLowerCase().contains(keyword.toLowerCase()))
             {counter ++;}
         }
-        Boolean b = listProductCards.size() == counter;
-        return listProductCards.size() == counter;
+        Boolean isCounterMatchedProductListSize = listProductCards.size() == counter;
+        return isCounterMatchedProductListSize;
     }
 }

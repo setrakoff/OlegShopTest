@@ -41,6 +41,7 @@ public class CartPage extends BasePage{
      * Method for removing product by name from cart
      */
     public List<ProductCard> removeProductFromCart(Integer itemIndex, List<ProductCard> productCards) {
+        log.info("Remove product with index '" + itemIndex + "' from cart");
         ProductCard product = productCards.get(itemIndex);
         String xpathButtonRemoveProductFromCart = "//div[@class='c-cart-item__content-wrapper' and ./div/a[normalize-space(text())='" + product.getName() + "']]/following-sibling::div//span/a[text()='Удалить']";
         WebElement webElement = driver.findElement(By.xpath(xpathButtonRemoveProductFromCart));

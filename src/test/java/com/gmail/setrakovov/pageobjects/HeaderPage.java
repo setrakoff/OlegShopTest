@@ -58,7 +58,7 @@ public class HeaderPage extends BasePage {
      * Method for expanding catalog form and go to subCategory page
      */
     public CatalogPage goToSubItemCatalogPage() {
-        log.debug("Go to sub-item catalog page");
+        log.info("Go to sub-item catalog page");
         click(buttonCatalogMain);
         moveMouse(category);
         click(subCategory);
@@ -68,7 +68,7 @@ public class HeaderPage extends BasePage {
      * Method of going to subCategory page
      */
     public CartPage goToCartPage() {
-        log.debug("Go to cart page");
+        log.info("Go to cart page");
         click(iconCart);
         return new CartPage(driver);
     }
@@ -82,7 +82,7 @@ public class HeaderPage extends BasePage {
      * Method oj checking whether a product is present in the cart
      */
     public Boolean productIsPresentInCartForm(ProductCard product) {
-        log.debug("Check, that product is present in");
+        log.info("Check, that product is present in");
         waitVisibility(formProductsInCart);
         String xpathProductInBasket = ".//a[@href and text()='" + product.getName() + "']";
         return (countElements(xpathProductInBasket) > 0);
@@ -91,7 +91,7 @@ public class HeaderPage extends BasePage {
      * Method for searching product by search field
      */
     public CatalogPage searchProductByKeyword(String keyword) {
-        log.debug("Input keyword '" + keyword + "' into search field and click on Search icon");
+        log.info("Input keyword '" + keyword + "' into search field and click on Search icon");
         writeText(inputSearchField, keyword);
         waitTextToBe(inputSearchField, keyword);
         click(iconSearch);
